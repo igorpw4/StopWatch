@@ -13,22 +13,21 @@ entity StateMachine is
         reset_out  : out STD_LOGIC;
         start_out  : out STD_LOGIC;
         stop_out   : out STD_LOGIC;
-        slpit_out  : out STD_LOGIC;
+        split_out  : out STD_LOGIC
     );
 end StateMachine;
 
 architecture Behavioral of StateMachine is
 
-    type state_type is ( START, STOP_S, SPLIT, RESET);
+    type state_type is ( START, STOP_S, SPLIT, RESETT);
     signal current_state, next_state : state_type;
-    signal 
+
 begin
 
-    
     process(clk, reset)
     begin
         if reset = '1' then
-            current_state <= RESET;  
+            current_state <= RESETT;  
         elsif rising_edge(clk) then
             current_state <= next_state;
         end if;
@@ -36,30 +35,37 @@ begin
 
     process(current_state, start_btn, stop_btn, split_btn)
     begin
+        -- Default: zera todas as saídas para evitar "latch"
+        reset_out <= '0';
+        start_out <= '0';
+        stop_out <= '0';
+        split_out <= '0';
+
         case current_state is
-            -- Estado inicial IDLE
-            when RESET =>
+            -- Estado RESETT
+            when RESETT =>
+                reset_out <= '1'; -- Sinaliza o reset
                 if start_btn = '1' then
-                    reset_out <= 0;
                     next_state <= START;
                 else
-                    next_state <= RESET;
+                    next_state <= RESETT;
                 end if;
 
-            -- Estado START (cronômetro rodando, por exemplo)
+            -- Estado START (cronômetro rodando)
             when START =>
+                start_out <= '1'; -- Sinaliza que o cronômetro está rodando
                 if stop_btn = '1' then
                     next_state <= STOP_S;
                 elsif split_btn = '1' then
-                    start_out <= 0;
                     next_state <= SPLIT;
                 else
                     next_state <= START;
                 end if;
+
             -- Estado STOP (cronômetro parado)
             when STOP_S =>
+                stop_out <= '1'; -- Sinaliza que o cronômetro está parado
                 if start_btn = '1' then
-                    stop_out <= 0;
                     next_state <= START;
                 elsif split_btn = '1' then
                     next_state <= SPLIT;
@@ -67,8 +73,9 @@ begin
                     next_state <= STOP_S;
                 end if;
           
-            -- Estado SPLIT (por exemplo, dividindo tempos intermediários)
+            -- Estado SPLIT (dividindo tempos intermediários)
             when SPLIT =>
+                split_out <= '1'; -- Sinaliza que está no estado SPLIT
                 if stop_btn = '1' then
                     next_state <= STOP_S;
                 else
@@ -77,17 +84,7 @@ begin
 
             -- Estado padrão caso ocorra algo inesperado
             when others =>
-                next_state <= RESET;
-        end case;
-
-        -- Saída do estado atual
-        case current_state is
-            when RESET  => reset_out <= 1; -- Estado RESET
-            when START => start_out <= 1; -- Estado START
-            when STOP_S  => stop_out <= 1; -- Estado STOP
-            when SPLIT => split_out <= 1; -- Estado SPLIT
-            when others => 
-                reset_out <= 0;
+                next_state <= RESETT;
         end case;
     end process;
 
