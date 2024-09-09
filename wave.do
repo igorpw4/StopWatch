@@ -3,17 +3,20 @@ onerror {resume}
 quietly WaveActivateNextPane {} 0
 
 # Adiciona sinais do testbench
-add wave -noupdate /tb_DiviserCounter/clk
-add wave -noupdate /tb_DiviserCounter/reset
-add wave -noupdate /tb_DiviserCounter/start
-add wave -noupdate /tb_DiviserCounter/stopp
-add wave -noupdate /tb_DiviserCounter/return_count
+add wave -noupdate /tb_top_Stop_Watch/clk_in
+add wave -noupdate /tb_top_Stop_Watch/rst_in
 
-# Adiciona sinais do módulo DiviserCounter
-add wave -noupdate -radix decimal /tb_DiviserCounter/uut/hundredth_count
-add wave -noupdate -radix decimal /tb_DiviserCounter/uut/segund_count
-add wave -noupdate -radix decimal /tb_DiviserCounter/uut/minute_count
-add wave -noupdate -radix decimal /tb_DiviserCounter/uut/hour_count
+# Adiciona sinais do módulo top_Stop_Watch
+add wave -noupdate -radix decimal /tb_top_Stop_Watch/uut/hour_count
+add wave -noupdate -radix decimal /tb_top_Stop_Watch/uut/minute_count
+add wave -noupdate -radix decimal /tb_top_Stop_Watch/uut/segund_count
+add wave -noupdate -radix decimal /tb_top_Stop_Watch/uut/hundredth_count
+
+# Adiciona sinais do módulo StateMachine
+add wave -noupdate /tb_top_Stop_Watch/uut/stateMachine/start_out
+add wave -noupdate /tb_top_Stop_Watch/uut/stateMachine/stop_out
+add wave -noupdate /tb_top_Stop_Watch/uut/stateMachine/reset_out
+add wave -noupdate /tb_top_Stop_Watch/uut/stateMachine/split_out
 
 # Configurações adicionais de exibição
 TreeUpdate [SetDefaultTree]
