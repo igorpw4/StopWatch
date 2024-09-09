@@ -19,7 +19,7 @@ end StateMachine;
 
 architecture Behavioral of StateMachine is
 
-    type state_type is ( START, STOP_, SPLIT, RESET);
+    type state_type is ( START, STOP_S, SPLIT, RESET);
     signal current_state, next_state : state_type;
     signal 
 begin
@@ -49,7 +49,7 @@ begin
             -- Estado START (cronômetro rodando, por exemplo)
             when START =>
                 if stop_btn = '1' then
-                    next_state <= STOP_;
+                    next_state <= STOP_S;
                 elsif split_btn = '1' then
                     start_out <= 0;
                     next_state <= SPLIT;
@@ -57,20 +57,20 @@ begin
                     next_state <= START;
                 end if;
             -- Estado STOP (cronômetro parado)
-            when STOP_ =>
+            when STOP_S =>
                 if start_btn = '1' then
                     stop_out <= 0;
                     next_state <= START;
                 elsif split_btn = '1' then
                     next_state <= SPLIT;
                 else
-                    next_state <= STOP_;
+                    next_state <= STOP_S;
                 end if;
           
             -- Estado SPLIT (por exemplo, dividindo tempos intermediários)
             when SPLIT =>
                 if stop_btn = '1' then
-                    next_state <= STOP_;
+                    next_state <= STOP_S;
                 else
                     next_state <= START;
                 end if;
@@ -84,7 +84,7 @@ begin
         case current_state is
             when RESET  => reset_out <= 1; -- Estado RESET
             when START => start_out <= 1; -- Estado START
-            when STOP_  => stop_out <= 1; -- Estado STOP
+            when STOP_S  => stop_out <= 1; -- Estado STOP
             when SPLIT => split_out <= 1; -- Estado SPLIT
             when others => 
                 reset_out <= 0;
