@@ -8,11 +8,11 @@ vlib work
 vmap work work
 
 # Compila os arquivos VHDL para a biblioteca 'work'
-vcom -work work DiviserCounter.vhd
-vcom -work work tb_DiviserCounter.vhd
+vcom -work work ClockDivisor.vhd
+vcom -work work tb_ClockDivisor.vhd
 
 # Realiza a simulação do testbench 'tb_DiviserCounter' com a opção de otimização e precisão de tempo em nanosegundos
-vsim -voptargs=+acc=lprn -t ns work.tb_DiviserCounter
+vsim -voptargs=+acc=lprn -t ns work.tb_CentisecondCounter
 
 # Suprime os avisos padrão durante a simulação
 set StdArithNoWarnings 1
