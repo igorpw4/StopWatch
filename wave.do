@@ -35,5 +35,9 @@ configure wave -gridperiod 1
 configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
+
+# Atualiza a visualização
 update
+
+# Configura o zoom da onda para o intervalo completo da simulação
 WaveRestoreZoom {0 ns} {100000 us}
