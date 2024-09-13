@@ -76,7 +76,7 @@ begin
         start_btn <= '0';
 
         -- Aguarda 1 segundo (100 * 10 ms = 1 segundo simulado)
-        wait for 1 ms;
+        wait for 1000 ms;
 
         -- Simula pressionar o botão de parar (stop_btn)
         stop_btn <= '1';
